@@ -1,27 +1,8 @@
-<view class="page">
-  <view class="hero">
-    <view class="title">4 步填完你的饮食画像</view>
-    <view class="desc">每一步都只填当前需要的信息，最后统一计算累计熟主食和盐。</view>
-  </view>
+<view class="page page--form">
+  <view class="ambient ambient--grain"></view>
+  <view class="ambient ambient--salt"></view>
 
-  <view class="progress-card">
-    <view class="progress-head">
-      <view class="progress-title">第 {{currentStep}} / 4 步</view>
-      <view class="progress-text">{{stepItems[currentStep - 1]}}</view>
-    </view>
-    <view class="progress-track">
-      <view class="progress-fill" style="width: {{progressPercent}}%;"></view>
-    </view>
-    <view class="step-pill-row">
-      <view class="step-pill {{index + 1 === currentStep ? 'step-pill--active' : ''}}" wx:for="{{stepItems}}" wx:key="*this">
-        {{index + 1}}
-      </view>
-    </view>
-  </view>
-
-  <view class="card" wx:if="{{currentStep === 1}}">
-    <view class="section-title">基础信息</view>
-
+  <view class="card">
     <view class="field">
       <view class="field-label">1. 出生日期</view>
       <picker mode="date" value="{{formData.birthDate}}" start="1900-01-01" end="{{today}}" bindchange="onBirthDateChange">
@@ -34,23 +15,19 @@
     <view class="field">
       <view class="field-label">2. 性别</view>
       <radio-group class="radio-group" bindchange="onSexChange">
-        <label class="radio-card" wx:for="{{sexOptions}}" wx:key="value">
-          <radio value="{{item.value}}" checked="{{formData.sex === item.value}}" color="#f6b26b" />
+        <label class="radio-card radio-card--compact" wx:for="{{sexOptions}}" wx:key="value">
+          <radio value="{{item.value}}" checked="{{formData.sex === item.value}}" color="#ec9854" />
           <text>{{item.label}}</text>
         </label>
       </radio-group>
     </view>
-  </view>
-
-  <view class="card" wx:if="{{currentStep === 2}}">
-    <view class="section-title">体型与活动</view>
 
     <view class="field">
       <view class="field-label">3. 体型</view>
       <radio-group class="radio-group radio-group--stack" bindchange="onBodyModeChange">
         <label class="radio-card radio-card--stack" wx:for="{{bodyModeOptions}}" wx:key="value">
           <view class="radio-card__main">
-            <radio value="{{item.value}}" checked="{{formData.bodyInputMode === item.value}}" color="#f6b26b" />
+            <radio value="{{item.value}}" checked="{{formData.bodyInputMode === item.value}}" color="#ec9854" />
             <text>{{item.label}}</text>
           </view>
         </label>
@@ -58,7 +35,7 @@
     </view>
 
     <view class="field" wx:if="{{formData.bodyInputMode === 'exact'}}">
-      <view class="field-label">4. 身高和体重</view>
+      <view class="field-label">4. 身高体重</view>
       <view class="input-row">
         <view class="input-item">
           <view class="input-label">身高 (cm)</view>
@@ -74,8 +51,8 @@
     <view class="field" wx:else>
       <view class="field-label">4. 你觉得自己属于</view>
       <radio-group class="radio-group" bindchange="onBodyTypeChange">
-        <label class="radio-card" wx:for="{{bodyTypeOptions}}" wx:key="value">
-          <radio value="{{item.value}}" checked="{{formData.bodyType === item.value}}" color="#f6b26b" />
+        <label class="radio-card radio-card--compact" wx:for="{{bodyTypeOptions}}" wx:key="value">
+          <radio value="{{item.value}}" checked="{{formData.bodyType === item.value}}" color="#ec9854" />
           <text>{{item.label}}</text>
         </label>
       </radio-group>
@@ -84,19 +61,15 @@
     <view class="field">
       <view class="field-label">5. 平时活动量</view>
       <radio-group class="radio-group radio-group--stack" bindchange="onActivityChange">
-        <label class="radio-card radio-card--stack" wx:for="{{activityOptions}}" wx:key="value">
+        <label class="radio-card radio-card--stack radio-card--rich" wx:for="{{activityOptions}}" wx:key="value">
           <view class="radio-card__main">
-            <radio value="{{item.value}}" checked="{{formData.activityLevel === item.value}}" color="#f6b26b" />
+            <radio value="{{item.value}}" checked="{{formData.activityLevel === item.value}}" color="#ec9854" />
             <text>{{item.label}}</text>
           </view>
           <text class="radio-card__desc">{{item.description}}</text>
         </label>
       </radio-group>
     </view>
-  </view>
-
-  <view class="card" wx:if="{{currentStep === 3}}">
-    <view class="section-title">成长地区</view>
 
     <view class="field">
       <view class="field-label">6. 0-17 岁，你主要在哪长大</view>
@@ -111,36 +84,32 @@
         <view class="picker-value picker-value--selected">{{provinceLabelsAdult[adultProvinceIndex]}}</view>
       </picker>
     </view>
-  </view>
-
-  <view class="card" wx:if="{{currentStep === 4}}">
-    <view class="section-title">饮食习惯</view>
 
     <view class="field">
       <view class="field-label">8A. 主食偏好</view>
 
-      <view class="ratio-block">
+      <view class="ratio-block ratio-block--rice">
         <view class="ratio-head">
           <text class="ratio-name">米饭</text>
           <text class="ratio-value">{{ratioValue.riceRatio}}%</text>
         </view>
-        <slider min="0" max="100" step="1" value="{{ratioValue.riceRatio}}" activeColor="#f2a34f" backgroundColor="#f0e0c6" data-key="riceRatio" bindchange="onRatioChange" />
+        <slider min="0" max="100" step="1" value="{{ratioValue.riceRatio}}" activeColor="#eea458" backgroundColor="#f4dfbe" data-key="riceRatio" bindchange="onRatioChange" />
       </view>
 
-      <view class="ratio-block">
+      <view class="ratio-block ratio-block--wheat">
         <view class="ratio-head">
           <text class="ratio-name">面食</text>
           <text class="ratio-value">{{ratioValue.wheatRatio}}%</text>
         </view>
-        <slider min="0" max="100" step="1" value="{{ratioValue.wheatRatio}}" activeColor="#98b768" backgroundColor="#dce8ca" data-key="wheatRatio" bindchange="onRatioChange" />
+        <slider min="0" max="100" step="1" value="{{ratioValue.wheatRatio}}" activeColor="#d6a862" backgroundColor="#efdec4" data-key="wheatRatio" bindchange="onRatioChange" />
       </view>
 
-      <view class="ratio-block">
+      <view class="ratio-block ratio-block--tuber">
         <view class="ratio-head">
           <text class="ratio-name">粗粮杂粮</text>
           <text class="ratio-value">{{ratioValue.tuberRatio}}%</text>
         </view>
-        <slider min="0" max="100" step="1" value="{{ratioValue.tuberRatio}}" activeColor="#d59b58" backgroundColor="#f1dfc8" data-key="tuberRatio" bindchange="onRatioChange" />
+        <slider min="0" max="100" step="1" value="{{ratioValue.tuberRatio}}" activeColor="#91b9a5" backgroundColor="#dbe9e0" data-key="tuberRatio" bindchange="onRatioChange" />
       </view>
 
       <view class="ratio-total">当前总和：{{ratioValue.riceRatio + ratioValue.wheatRatio + ratioValue.tuberRatio}}%</view>
@@ -149,8 +118,8 @@
     <view class="field">
       <view class="field-label">8B. 口味偏好</view>
       <radio-group class="radio-group" bindchange="onTasteChange">
-        <label class="radio-card" wx:for="{{tasteOptions}}" wx:key="value">
-          <radio value="{{item.value}}" checked="{{formData.tasteLevel === item.value}}" color="#f6b26b" />
+        <label class="radio-card radio-card--compact" wx:for="{{tasteOptions}}" wx:key="value">
+          <radio value="{{item.value}}" checked="{{formData.tasteLevel === item.value}}" color="#ec9854" />
           <text>{{item.label}}</text>
         </label>
       </radio-group>
@@ -159,8 +128,8 @@
     <view class="field">
       <view class="field-label">8B. 外食频率</view>
       <radio-group class="radio-group radio-group--stack" bindchange="onEatOutChange">
-        <label class="radio-card radio-card--stack radio-card--multiline" wx:for="{{eatOutOptions}}" wx:key="value">
-          <radio value="{{item.value}}" checked="{{formData.eatOutLevel === item.value}}" color="#f6b26b" />
+        <label class="radio-card radio-card--stack radio-card--multiline radio-card--rich" wx:for="{{eatOutOptions}}" wx:key="value">
+          <radio value="{{item.value}}" checked="{{formData.eatOutLevel === item.value}}" color="#ec9854" />
           <text class="radio-card__label radio-card__label--multiline">{{item.label}}</text>
         </label>
       </radio-group>
@@ -172,11 +141,7 @@
   </view>
 
   <view class="action-bar">
-    <button class="secondary-btn {{currentStep === 1 ? 'secondary-btn--full' : ''}}" bindtap="handlePrev">
-      {{currentStep === 1 ? '返回首页' : '上一步'}}
-    </button>
-    <button class="primary-btn" bindtap="handlePrimary">
-      {{currentStep === 4 ? '开始算算看' : '下一步'}}
-    </button>
+    <button class="secondary-btn" bindtap="handleBack">返回首页</button>
+    <button class="primary-btn" bindtap="handleSubmit">开始算算看</button>
   </view>
 </view>

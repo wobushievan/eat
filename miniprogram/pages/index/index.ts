@@ -12,16 +12,4 @@ Page({
       },
     })
   },
-
-  handleAbout() {
-    wx.navigateTo({
-      url: '/pages/about/index',
-      fail() {
-        wx.showToast({
-          title: '进入说明页失败',
-          icon: 'none',
-        })
-      },
-    })
-  },
 })

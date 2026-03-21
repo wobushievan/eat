@@ -1,7 +1,8 @@
-<view class="page">
+<view class="page page--about">
   <view class="hero">
-    <view class="title">结果说明</view>
-    <view class="desc">这里把这次结果的算法口径讲清楚，省得你看着一头雾水。</view>
+    <view class="eyebrow">结果说明</view>
+    <view class="title">这次的数字，是怎么讲出来的</view>
+    <view class="desc">这里把算法口径讲清楚，方便你把图像、数量和真实含义一起看明白。</view>
   </view>
 
   <view class="card">

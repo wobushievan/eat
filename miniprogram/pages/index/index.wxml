@@ -1,18 +1,13 @@
-<view class="page">
-  <view class="hero">
-    <view class="title">人生累计饮食估算</view>
-    <view class="desc">
-      输入你的基础信息，估算截至今天你一共吃了多少熟主食和盐。
-    </view>
-  </view>
+<view class="page page--home">
+  <view class="home-stack">
+    <view class="title">不听盐论，自有饭道</view>
 
-  <view class="card">
-    <view class="card-title">这次可以做什么</view>
-    <view class="card-desc">
-      先完成 4 步填写，计算人生累计熟主食和盐，看看截至今天你大概吃了多少。
+    <view class="hero-shell">
+      <image class="hero-image" src="../../assets/home/home-hero.jpg" mode="widthFix"></image>
     </view>
-  </view>
 
-  <button class="primary-btn" bindtap="handleStart">开始计算</button>
-  <button class="secondary-btn" bindtap="handleAbout">查看结果说明</button>
+    <view class="subtitle">截止到现在，我到底吃了多少饭多少盐</view>
+
+    <button class="primary-btn" bindtap="handleStart">开始计算</button>
+  </view>
 </view>

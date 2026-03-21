@@ -1,63 +1,82 @@
 .page {
   min-height: 100vh;
   box-sizing: border-box;
-  padding: 40rpx 32rpx 56rpx;
-  background: #fff8ef;
+  padding: 36rpx 28rpx 56rpx;
+  background:
+    radial-gradient(circle at top left, rgba(246, 207, 134, 0.28), transparent 34%),
+    radial-gradient(circle at 88% 16%, rgba(149, 194, 190, 0.16), transparent 24%),
+    linear-gradient(180deg, #fbf6ee 0%, #f6f0e5 100%);
 }
 
 .hero {
   margin-bottom: 28rpx;
 }
 
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  height: 46rpx;
+  padding: 0 20rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.78);
+  color: #a07c54;
+  font-size: 24rpx;
+  font-weight: 600;
+  box-shadow: 0 8rpx 20rpx rgba(179, 145, 103, 0.12);
+}
+
 .title {
-  font-size: 48rpx;
-  line-height: 1.25;
+  margin-top: 18rpx;
+  font-size: 52rpx;
+  line-height: 1.2;
   font-weight: 700;
-  color: #2f2a24;
-  margin-bottom: 16rpx;
+  color: #3c2d23;
 }
 
 .desc {
+  margin-top: 14rpx;
   font-size: 28rpx;
-  line-height: 1.7;
-  color: #7a6f63;
+  line-height: 1.75;
+  color: #786759;
 }
 
 .card {
-  background: #ffffff;
-  border-radius: 24rpx;
-  padding: 32rpx;
-  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.04);
-  margin-bottom: 24rpx;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 34rpx;
+  padding: 30rpx;
+  border: 2rpx solid rgba(233, 222, 204, 0.72);
+  box-shadow: 0 20rpx 48rpx rgba(157, 127, 92, 0.12);
+  margin-bottom: 22rpx;
 }
 
 .card-title {
   font-size: 30rpx;
-  font-weight: 600;
-  color: #2f2a24;
-  margin-bottom: 16rpx;
+  font-weight: 700;
+  color: #34261f;
+  margin-bottom: 14rpx;
 }
 
 .card-desc {
   font-size: 26rpx;
-  line-height: 1.75;
-  color: #7a6f63;
+  line-height: 1.8;
+  color: #726255;
 }
 
 .primary-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 88rpx;
+  height: 92rpx;
   padding: 0 24rpx;
   border-radius: 999rpx;
-  background: #f6b26b;
-  color: #ffffff;
+  background: linear-gradient(180deg, #f4ae66 0%, #e48a4f 100%);
+  color: #fffaf3;
   font-size: 30rpx;
-  font-weight: 600;
+  font-weight: 700;
   border: none;
   box-sizing: border-box;
   text-align: center;
+  box-shadow: 0 18rpx 34rpx rgba(201, 123, 55, 0.22);
 }
 
 .primary-btn::after {

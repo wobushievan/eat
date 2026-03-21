@@ -1,38 +1,78 @@
-<view class="page">
+<view class="page page--result">
+  <view class="ambient ambient--grain"></view>
+  <view class="ambient ambient--salt"></view>
+
   <view wx:if="{{!empty}}">
     <view class="hero">
       <view class="eyebrow">计算日期 {{sourceDate}}</view>
-      <view class="title">到目前为止，你大概一共吃了</view>
-      <view class="desc">你现在 {{ageText}}</view>
+      <view class="hero-meta">{{ageText}}</view>
     </view>
 
-    <view class="card">
-      <view class="card-title">累计熟主食</view>
-      <view class="result-value">{{cookedPrimaryText}}</view>
-      <view class="result-sub">{{cookedSecondaryText}}</view>
-      <view class="result-kg">{{cookedKgText}}</view>
+    <view class="result-card result-card--grain">
+      <view class="result-card__label">{{cookedCard.label}}</view>
+
+      <view class="data-row">
+        <view class="data-row__title">{{cookedCard.primaryRow.title}}</view>
+        <view class="icon-strip">
+          <view wx:for="{{cookedCard.primaryRow.rows}}" wx:key="index" class="icon-row" style="{{item.style}}">
+            <view wx:for="{{item.icons}}" wx:key="index" class="display-icon" style="{{item.style}}">
+              <image class="display-image" src="{{cookedCard.primaryRow.asset}}" mode="aspectFit"></image>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{cookedCard.secondaryRow}}" class="data-row data-row--secondary">
+        <view class="data-row__title">{{cookedCard.secondaryRow.title}}</view>
+        <view class="icon-strip">
+          <view wx:for="{{cookedCard.secondaryRow.rows}}" wx:key="index" class="icon-row" style="{{item.style}}">
+            <view wx:for="{{item.icons}}" wx:key="index" class="display-icon" style="{{item.style}}">
+              <image class="display-image" src="{{cookedCard.secondaryRow.asset}}" mode="aspectFit"></image>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="result-total">{{cookedCard.totalText}}</view>
     </view>
 
-    <view class="card">
-      <view class="card-title">累计盐</view>
-      <view class="result-value">{{saltPrimaryText}}</view>
-      <view class="result-sub">{{saltSecondaryText}}</view>
-      <view class="result-kg">{{saltKgText}}</view>
+    <view class="result-card result-card--salt">
+      <view class="result-card__label">{{saltCard.label}}</view>
+
+      <view class="data-row">
+        <view class="data-row__title">{{saltCard.primaryRow.title}}</view>
+        <view class="icon-strip">
+          <view wx:for="{{saltCard.primaryRow.rows}}" wx:key="index" class="icon-row" style="{{item.style}}">
+            <view wx:for="{{item.icons}}" wx:key="index" class="display-icon" style="{{item.style}}">
+              <image class="display-image" src="{{saltCard.primaryRow.asset}}" mode="aspectFit"></image>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{saltCard.secondaryRow}}" class="data-row data-row--secondary">
+        <view class="data-row__title">{{saltCard.secondaryRow.title}}</view>
+        <view class="icon-strip">
+          <view wx:for="{{saltCard.secondaryRow.rows}}" wx:key="index" class="icon-row" style="{{item.style}}">
+            <view wx:for="{{item.icons}}" wx:key="index" class="display-icon" style="{{item.style}}">
+              <image class="display-image" src="{{saltCard.secondaryRow.asset}}" mode="aspectFit"></image>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="result-total">{{saltCard.totalText}}</view>
     </view>
 
-    <view class="card">
-      <view class="card-title">结果说明</view>
-      <view class="card-desc">这是按统一规则算出来的有趣估算，适合拿来感受一下人生总量，不是真实医学记录。</view>
+    <view class="action-row">
+      <button class="primary-btn primary-btn--half" bindtap="goEdit">重新填一遍</button>
+      <button class="secondary-btn secondary-btn--half" bindtap="goAbout">看看这结果怎么算</button>
     </view>
-
-    <button class="primary-btn" bindtap="goEdit">重新填一遍</button>
-    <button class="secondary-btn" bindtap="goAbout">看看这结果怎么算</button>
   </view>
 
   <view wx:else class="empty-page">
     <view class="hero">
-      <view class="title">暂无结果</view>
-      <view class="desc">请先完成表单填写，再回来查看估算结果。</view>
+      <view class="hero-meta hero-meta--empty">还没有结果</view>
     </view>
 
     <button class="primary-btn" bindtap="goHome">返回首页</button>

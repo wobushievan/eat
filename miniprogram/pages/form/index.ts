@@ -14,7 +14,6 @@ import type {
 import type { ProvinceCode } from '../../types/province'
 
 const TODAY_MIN = '1900-01-01'
-const TOTAL_STEPS = 4
 
 const PROVINCE_OPTIONS: Array<{ label: string; value: ProvinceCode }> = [
   { label: '北京市', value: 'beijing' },
@@ -77,13 +76,6 @@ function findProvinceIndex(value: ProvinceCode): number {
   return index >= 0 ? index : 0
 }
 
-function buildStepState(currentStep: number) {
-  return {
-    currentStep,
-    progressPercent: (currentStep / TOTAL_STEPS) * 100,
-  }
-}
-
 function buildFormData(base: UserFormData): UserFormData {
   return {
     ...base,
@@ -93,7 +85,7 @@ function buildFormData(base: UserFormData): UserFormData {
   }
 }
 
-function validateStep1(formData: UserFormData, today: string): string {
+function validateAll(formData: UserFormData, today: string): string {
   if (!formData.birthDate) {
     return '请选择出生日期'
   }
@@ -103,10 +95,7 @@ function validateStep1(formData: UserFormData, today: string): string {
   if (formData.birthDate > today) {
     return '出生日期不能晚于今天'
   }
-  return ''
-}
 
-function validateStep2(formData: UserFormData): string {
   if (formData.bodyInputMode === 'exact') {
     if (!formData.heightCm || formData.heightCm < 80 || formData.heightCm > 230) {
       return '身高填个正常范围吧，80-230 cm 之间'
@@ -114,27 +103,17 @@ function validateStep2(formData: UserFormData): string {
     if (!formData.weightKg || formData.weightKg < 10 || formData.weightKg > 250) {
       return '体重填个正常范围吧，10-250 kg 之间'
     }
-    return ''
-  }
-
-  if (!formData.bodyType) {
+  } else if (!formData.bodyType) {
     return '选一下你觉得自己的体型'
   }
 
-  return ''
-}
-
-function validateStep3(formData: UserFormData): string {
   if (!formData.childhoodProvince) {
     return '选一下你 0-17 岁主要长大的地方'
   }
   if (!formData.adultProvince) {
     return '选一下你 18 岁后主要居住的地方'
   }
-  return ''
-}
 
-function validateStep4(formData: UserFormData): string {
   const total = formData.riceRatio + formData.wheatRatio + formData.tuberRatio
   if (total !== 100) {
     return '主食偏好总和必须等于 100'
@@ -145,27 +124,13 @@ function validateStep4(formData: UserFormData): string {
   if (!formData.eatOutLevel) {
     return '请选择外食频率'
   }
-  return ''
-}
 
-function validateCurrentStep(formData: UserFormData, today: string, step: number): string {
-  if (step === 1) {
-    return validateStep1(formData, today)
-  }
-  if (step === 2) {
-    return validateStep2(formData)
-  }
-  if (step === 3) {
-    return validateStep3(formData)
-  }
-  return validateStep4(formData)
+  return ''
 }
 
 Page({
   data: {
     today: getTodayString(),
-    stepItems: ['基础信息', '体型与活动', '成长地区', '饮食习惯'],
-    ...buildStepState(1),
     provinceLabelsChildhood: PROVINCE_OPTIONS.map((item) => item.label),
     provinceLabelsAdult: PROVINCE_OPTIONS.map((item) => item.label),
     sexOptions: [
@@ -347,46 +312,6 @@ Page({
     })
   },
 
-  handlePrev() {
-    if (this.data.currentStep <= 1) {
-      this.handleBack()
-      return
-    }
-
-    this.setData({
-      ...buildStepState(this.data.currentStep - 1),
-      errorText: '',
-    })
-  },
-
-  handleNext() {
-    const formData = buildFormData(this.data.formData)
-    const errorText = validateCurrentStep(formData, this.data.today, this.data.currentStep)
-
-    if (errorText) {
-      this.showError(errorText)
-      return
-    }
-
-    if (this.data.currentStep >= TOTAL_STEPS) {
-      return
-    }
-
-    this.setData({
-      formData,
-      ...buildStepState(this.data.currentStep + 1),
-      errorText: '',
-    })
-  },
-
-  handlePrimary() {
-    if (this.data.currentStep === TOTAL_STEPS) {
-      this.handleSubmit()
-      return
-    }
-    this.handleNext()
-  },
-
   handleBack() {
     wx.navigateBack({
       fail() {
@@ -399,13 +324,7 @@ Page({
 
   handleSubmit() {
     const formData = buildFormData(this.data.formData)
-    const validators = [
-      validateStep1(formData, this.data.today),
-      validateStep2(formData),
-      validateStep3(formData),
-      validateStep4(formData),
-    ]
-    const errorText = validators.find(Boolean) || ''
+    const errorText = validateAll(formData, this.data.today)
 
     if (errorText) {
       this.showError(errorText)

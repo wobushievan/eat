@@ -1,77 +1,68 @@
 .page {
   min-height: 100vh;
   box-sizing: border-box;
-  padding: 48rpx 32rpx;
-  background: #fff8ef;
+  padding: 24rpx 24rpx 36rpx;
 }
 
-.hero {
-  margin-bottom: 40rpx;
+.page--home {
+  background:
+    radial-gradient(circle at top left, rgba(248, 214, 149, 0.34), transparent 36%),
+    radial-gradient(circle at 88% 16%, rgba(151, 196, 196, 0.16), transparent 22%),
+    linear-gradient(180deg, #fbf6ee 0%, #f7f0e3 58%, #f1f4eb 100%);
+}
+
+.home-stack {
+  min-height: calc(100vh - 60rpx);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28rpx;
 }
 
 .title {
-  font-size: 52rpx;
+  margin-bottom: 0;
+  text-align: center;
+  font-size: 44rpx;
   line-height: 1.25;
   font-weight: 700;
-  color: #2f2a24;
-  margin-bottom: 20rpx;
+  color: #4a3527;
 }
 
-.desc {
+.hero-shell {
+  overflow: hidden;
+  border-radius: 38rpx;
+  box-shadow: 0 24rpx 64rpx rgba(165, 135, 99, 0.14);
+}
+
+.hero-image {
+  width: 100%;
+  display: block;
+}
+
+.subtitle {
+  text-align: center;
   font-size: 28rpx;
-  line-height: 1.7;
-  color: #7a6f63;
+  line-height: 1.6;
+  color: #7b6554;
 }
 
-.card {
-  background: #ffffff;
-  border-radius: 24rpx;
-  padding: 32rpx;
-  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.04);
-  margin-bottom: 40rpx;
-}
-
-.card-title {
-  font-size: 32rpx;
-  font-weight: 600;
-  color: #2f2a24;
-  margin-bottom: 12rpx;
-}
-
-.card-desc {
-  font-size: 26rpx;
-  line-height: 1.7;
-  color: #7a6f63;
-}
-
-.primary-btn,
-.secondary-btn {
+.primary-btn {
+  margin-top: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 88rpx;
   padding: 0 24rpx;
   border-radius: 999rpx;
-  font-size: 30rpx;
-  font-weight: 600;
   border: none;
-  box-sizing: border-box;
-  text-align: center;
+  background: linear-gradient(180deg, #f4ae65 0%, #e58d4b 100%);
+  color: #fffaf3;
+  font-size: 30rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+  box-shadow: 0 16rpx 28rpx rgba(201, 123, 55, 0.22);
 }
 
-.primary-btn {
-  background: #f6b26b;
-  color: #ffffff;
-}
-
-.secondary-btn {
-  margin-top: 20rpx;
-  background: #ffffff;
-  color: #6f6255;
-  border: 2rpx solid #ead9c8;
-}
-
-.primary-btn::after,
-.secondary-btn::after {
+.primary-btn::after {
   border: none;
 }
