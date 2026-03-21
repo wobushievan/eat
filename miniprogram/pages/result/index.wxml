@@ -1,0 +1,40 @@
+<view class="page">
+  <view wx:if="{{!empty}}">
+    <view class="hero">
+      <view class="eyebrow">计算日期 {{sourceDate}}</view>
+      <view class="title">到目前为止，你大概一共吃了</view>
+      <view class="desc">你现在 {{ageText}}</view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">累计熟主食</view>
+      <view class="result-value">{{cookedPrimaryText}}</view>
+      <view class="result-sub">{{cookedSecondaryText}}</view>
+      <view class="result-kg">{{cookedKgText}}</view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">累计盐</view>
+      <view class="result-value">{{saltPrimaryText}}</view>
+      <view class="result-sub">{{saltSecondaryText}}</view>
+      <view class="result-kg">{{saltKgText}}</view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">结果说明</view>
+      <view class="card-desc">这是按统一规则算出来的有趣估算，适合拿来感受一下人生总量，不是真实医学记录。</view>
+    </view>
+
+    <button class="primary-btn" bindtap="goEdit">重新填一遍</button>
+    <button class="secondary-btn" bindtap="goAbout">看看这结果怎么算</button>
+  </view>
+
+  <view wx:else class="empty-page">
+    <view class="hero">
+      <view class="title">暂无结果</view>
+      <view class="desc">请先完成表单填写，再回来查看估算结果。</view>
+    </view>
+
+    <button class="primary-btn" bindtap="goHome">返回首页</button>
+  </view>
+</view>

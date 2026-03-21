@@ -1,0 +1,57 @@
+<view class="ratio-card">
+  <view class="ratio-row">
+    <view class="ratio-head">
+      <text class="ratio-title">米饭类</text>
+      <text class="ratio-value">{{innerValue.riceRatio}}%</text>
+    </view>
+    <slider
+      min="0"
+      max="100"
+      step="1"
+      value="{{innerValue.riceRatio}}"
+      activeColor="#f2a34f"
+      backgroundColor="#f0e0c6"
+      data-key="riceRatio"
+      bindchange="onSliderChange"
+    />
+  </view>
+
+  <view class="ratio-row">
+    <view class="ratio-head">
+      <text class="ratio-title">面食类</text>
+      <text class="ratio-value">{{innerValue.wheatRatio}}%</text>
+    </view>
+    <slider
+      min="0"
+      max="100"
+      step="1"
+      value="{{innerValue.wheatRatio}}"
+      activeColor="#9dbb6b"
+      backgroundColor="#e0edd2"
+      data-key="wheatRatio"
+      bindchange="onSliderChange"
+    />
+  </view>
+
+  <view class="ratio-row">
+    <view class="ratio-head">
+      <text class="ratio-title">杂粮 / 薯类</text>
+      <text class="ratio-value">{{innerValue.tuberRatio}}%</text>
+    </view>
+    <slider
+      min="0"
+      max="100"
+      step="1"
+      value="{{innerValue.tuberRatio}}"
+      activeColor="#d09d5a"
+      backgroundColor="#f2e5d6"
+      data-key="tuberRatio"
+      bindchange="onSliderChange"
+    />
+  </view>
+
+  <view class="ratio-footer">
+    <text class="ratio-total">当前总和：{{innerValue.riceRatio + innerValue.wheatRatio + innerValue.tuberRatio}}%</text>
+    <text class="ratio-reset" bindtap="onReset">恢复默认</text>
+  </view>
+</view>

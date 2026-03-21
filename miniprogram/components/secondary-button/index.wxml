@@ -1,0 +1,3 @@
+<button class="secondary-btn" disabled="{{disabled}}" bindtap="handleTap">
+  {{text}}
+</button>

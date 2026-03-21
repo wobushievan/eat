@@ -1,0 +1,7 @@
+<view class="section">
+  <view class="section__head" wx:if="{{title}}">
+    <text class="section__title">{{title}}</text>
+    <text class="section__desc" wx:if="{{description}}">{{description}}</text>
+  </view>
+  <slot />
+</view>

@@ -1,0 +1,7 @@
+<view class="stat-card stat-card--{{tone}}">
+  <text class="stat-card__title">{{title}}</text>
+  <text class="stat-card__primary">{{primaryText}}</text>
+  <text class="stat-card__secondary">{{secondaryText}}</text>
+  <text class="stat-card__kg">{{kgText}}</text>
+  <text class="stat-card__desc">{{description}}</text>
+</view>

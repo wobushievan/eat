@@ -1,0 +1,23 @@
+{
+  "appid": "touristappid",
+  "projectname": "diet-life-estimator",
+  "compileType": "miniprogram",
+  "libVersion": "3.7.8",
+  "setting": {
+    "es6": true,
+    "postcss": true,
+    "minified": false,
+    "enhance": true,
+    "coverView": true,
+    "showShadowRootInWxmlPanel": true,
+    "packNpmManually": false,
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "minifyJS": true,
+    "checkInvalidKey": true,
+    "ignoreUploadUnusedFiles": true
+  },
+  "simulatorType": "wechat",
+  "srcMiniprogramRoot": "miniprogram/",
+  "condition": {}
+}

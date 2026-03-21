@@ -1,0 +1,12 @@
+<view class="chip-list">
+  <view
+    wx:for="{{options}}"
+    wx:key="value"
+    class="chip {{value === item.value ? 'chip--active' : ''}}"
+    data-value="{{item.value}}"
+    bindtap="onSelect"
+  >
+    <text class="chip__label">{{item.label}}</text>
+    <text class="chip__desc" wx:if="{{item.description}}">{{item.description}}</text>
+  </view>
+</view>

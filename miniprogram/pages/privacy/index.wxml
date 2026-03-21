@@ -1,0 +1,26 @@
+<view class="page-shell">
+  <card variant="warm">
+    <view class="privacy-block">
+      <text class="privacy-block__title">V1 仅本地存储</text>
+      <text class="privacy-block__text">
+        你的表单信息只会保存在当前设备本地，不会上传到服务端，不接入登录，也不会做云端同步。
+      </text>
+    </view>
+    <view class="privacy-block privacy-block--gap">
+      <text class="privacy-block__title">如何重置本地信息</text>
+      <text class="privacy-block__text">
+        如果你想重置信息，可以重新填写表单，本地缓存会被最新的内容覆盖。
+      </text>
+    </view>
+    <view class="privacy-block privacy-block--gap">
+      <text class="privacy-block__title">后续如接入云端</text>
+      <text class="privacy-block__text">
+        如果未来版本增加云端同步或账号能力，会单独更新隐私说明，不会沿用当前这份本地存储说明直接替代。
+      </text>
+    </view>
+  </card>
+
+  <view class="section-gap">
+    <primary-button text="{{accepted ? '已了解本地存储说明' : '我已了解'}}" bind:tap="acceptPrivacy" />
+  </view>
+</view>

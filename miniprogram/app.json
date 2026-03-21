@@ -1,0 +1,19 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/form/index",
+    "pages/result/index",
+    "pages/about/index",
+    "pages/privacy/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "人生累计饮食估算",
+    "navigationBarBackgroundColor": "#FFF8EF",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FFF8EF",
+    "backgroundTextStyle": "light"
+  },
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json"
+}

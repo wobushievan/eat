@@ -1,0 +1,77 @@
+.page {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 48rpx 32rpx;
+  background: #fff8ef;
+}
+
+.hero {
+  margin-bottom: 40rpx;
+}
+
+.title {
+  font-size: 52rpx;
+  line-height: 1.25;
+  font-weight: 700;
+  color: #2f2a24;
+  margin-bottom: 20rpx;
+}
+
+.desc {
+  font-size: 28rpx;
+  line-height: 1.7;
+  color: #7a6f63;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.04);
+  margin-bottom: 40rpx;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2f2a24;
+  margin-bottom: 12rpx;
+}
+
+.card-desc {
+  font-size: 26rpx;
+  line-height: 1.7;
+  color: #7a6f63;
+}
+
+.primary-btn,
+.secondary-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  padding: 0 24rpx;
+  border-radius: 999rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  border: none;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.primary-btn {
+  background: #f6b26b;
+  color: #ffffff;
+}
+
+.secondary-btn {
+  margin-top: 20rpx;
+  background: #ffffff;
+  color: #6f6255;
+  border: 2rpx solid #ead9c8;
+}
+
+.primary-btn::after,
+.secondary-btn::after {
+  border: none;
+}

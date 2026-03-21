@@ -1,0 +1,35 @@
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.chip {
+  min-width: 180rpx;
+  padding: 22rpx 24rpx;
+  border-radius: 24rpx;
+  background: rgba(255, 250, 242, 0.92);
+  border: 2rpx solid rgba(224, 203, 172, 0.9);
+  box-sizing: border-box;
+}
+
+.chip--active {
+  background: linear-gradient(180deg, #fff3dd 0%, #fff8ef 100%);
+  border-color: #edb164;
+  box-shadow: 0 10rpx 24rpx rgba(237, 177, 100, 0.18);
+}
+
+.chip__label {
+  display: block;
+  font-size: 28rpx;
+  color: #513f2f;
+  font-weight: 600;
+}
+
+.chip__desc {
+  margin-top: 8rpx;
+  display: block;
+  font-size: 22rpx;
+  line-height: 1.5;
+  color: #8a7964;
+}

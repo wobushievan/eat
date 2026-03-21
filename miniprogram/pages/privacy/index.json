@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "隐私说明",
+  "usingComponents": {
+    "card": "/components/card/index",
+    "primary-button": "/components/primary-button/index"
+  }
+}
