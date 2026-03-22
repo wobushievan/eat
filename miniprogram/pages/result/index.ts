@@ -123,14 +123,24 @@ function buildRows(unit: VisualUnit, count: number): DisplayIconRow[] {
   const rows: DisplayIconRow[] = []
   let remaining = Math.max(1, count)
   let rowIndex = 0
-  const step = Math.max(1, metric.width - metric.overlap)
-  const capacityByWidth = Math.max(1, Math.floor((ROW_MAX_WIDTH - metric.width) / step) + 1)
+  const minOverlap = Math.max(2, Math.floor(metric.overlap * 0.25))
+  const maxStep = Math.max(1, metric.width - minOverlap)
+  const capacityByWidth = Math.max(1, Math.floor((ROW_MAX_WIDTH - metric.width) / maxStep) + 1)
   const rowCapacity = Math.max(1, Math.min(metric.maxPerRow, capacityByWidth))
 
   while (remaining > 0) {
     const take = Math.min(rowCapacity, remaining)
+    const isLastRow = remaining <= rowCapacity
+    let overlap = metric.overlap
+
+    if (!isLastRow && take > 1) {
+      const targetStep = (ROW_MAX_WIDTH - metric.width) / (take - 1)
+      const targetOverlap = Math.round(metric.width - targetStep)
+      overlap = Math.max(minOverlap, Math.min(metric.overlap, targetOverlap))
+    }
+
     const icons: DisplayIconItem[] = Array.from({ length: take }, (_, index) => ({
-      style: `width:${metric.width}rpx;height:${metric.height}rpx;${index > 0 ? `margin-left:-${metric.overlap}rpx;` : ''}`,
+      style: `width:${metric.width}rpx;height:${metric.height}rpx;${index > 0 ? `margin-left:-${overlap}rpx;` : ''}`,
     }))
 
     rows.push({
@@ -150,7 +160,18 @@ function buildVisualGroups(pieces: LevelPiece[]): VisualGroup[] {
     .filter((piece) => piece.visualCount > 0)
     .map((piece) => ({
       unit: piece.unit,
-      title: piece.text,
+      title:
+        piece.unit === 'bowl'
+          ? `${piece.count}大碗`
+          : piece.unit === 'bucket'
+            ? `${piece.count}个饭桶`
+            : piece.unit === 'bag'
+              ? `${piece.count}小袋`
+              : piece.unit === 'box'
+                ? `${piece.count}箱`
+                : piece.unit === 'sack'
+                  ? `${piece.count}麻袋`
+                  : piece.text,
       asset: ASSET_MAP[piece.unit],
       rows: buildRows(piece.unit, piece.visualCount),
     }))
@@ -158,12 +179,12 @@ function buildVisualGroups(pieces: LevelPiece[]): VisualGroup[] {
 
 function formatWeightText(totalKg: number, label: string): string {
   if (totalKg >= 1000) {
-    return `共计 ${(totalKg / 1000).toFixed(1)} 吨${label}`
+    return `${label === '熟主食' ? '粮食总重量合计' : '盐总重量合计'} ${(totalKg / 1000).toFixed(1)} 吨`
   }
   if (totalKg >= 1) {
-    return `共计 ${totalKg.toFixed(1)} kg ${label}`
+    return `${label === '熟主食' ? '粮食总重量合计' : '盐总重量合计'} ${totalKg.toFixed(1)} kg`
   }
-  return `共计 ${Math.round(totalKg * 1000)} g ${label}`
+  return `${label === '熟主食' ? '粮食总重量合计' : '盐总重量合计'} ${Math.round(totalKg * 1000)} g`
 }
 
 function joinSummary(primaryText: string, extraTexts: string[]): string {
@@ -187,9 +208,9 @@ function buildCookedPieces(result: CalculationResult): LevelPiece[] {
     const bowls = remainBowls - riceCookers * 10
 
     return [
-      { unit: 'bucket', count: buckets, text: `${buckets}桶饭`, visualCount: buckets },
+      { unit: 'bucket', count: buckets, text: `${buckets}个饭桶`, visualCount: buckets },
       { unit: 'riceCooker', count: riceCookers, text: `${riceCookers}个电饭煲`, visualCount: riceCookers },
-      { unit: 'bowl', count: bowls, text: `${bowls}碗饭`, visualCount: bowls },
+      { unit: 'bowl', count: bowls, text: `${bowls}碗的饭`, visualCount: bowls },
     ]
   }
 
@@ -200,7 +221,7 @@ function buildCookedPieces(result: CalculationResult): LevelPiece[] {
 
     return [
       { unit: 'riceCooker', count: riceCookers, text: `${riceCookers}个电饭煲`, visualCount: riceCookers },
-      { unit: 'bowl', count: bowls, text: `${bowls}碗饭`, visualCount: bowls },
+      { unit: 'bowl', count: bowls, text: `${bowls}碗的饭`, visualCount: bowls },
     ]
   }
 
@@ -208,7 +229,7 @@ function buildCookedPieces(result: CalculationResult): LevelPiece[] {
   const visualCount = Math.max(1, Math.floor(bowlsValue))
 
   return [
-    { unit: 'bowl', count: bowlsValue, text: `${bowlsValue.toFixed(2)}碗饭`, visualCount },
+    { unit: 'bowl', count: bowlsValue, text: `${bowlsValue.toFixed(2)}碗的饭`, visualCount },
   ]
 }
 
@@ -223,9 +244,9 @@ function buildSaltPieces(result: CalculationResult): LevelPiece[] {
     const bags = remainBags - boxes * 20
 
     return [
-      { unit: 'sack', count: sacks, text: `${sacks}麻袋盐`, visualCount: sacks },
-      { unit: 'box', count: boxes, text: `${boxes}箱盐`, visualCount: boxes },
-      { unit: 'bag', count: bags, text: `${bags}袋家用盐`, visualCount: bags },
+      { unit: 'sack', count: sacks, text: `${sacks}麻袋`, visualCount: sacks },
+      { unit: 'box', count: boxes, text: `${boxes}箱`, visualCount: boxes },
+      { unit: 'bag', count: bags, text: `${bags}袋的盐`, visualCount: bags },
     ]
   }
 
@@ -235,8 +256,8 @@ function buildSaltPieces(result: CalculationResult): LevelPiece[] {
     const bags = totalBags - boxes * 20
 
     return [
-      { unit: 'box', count: boxes, text: `${boxes}箱盐`, visualCount: boxes },
-      { unit: 'bag', count: bags, text: `${bags}袋家用盐`, visualCount: bags },
+      { unit: 'box', count: boxes, text: `${boxes}箱`, visualCount: boxes },
+      { unit: 'bag', count: bags, text: `${bags}袋的盐`, visualCount: bags },
     ]
   }
 
@@ -244,7 +265,7 @@ function buildSaltPieces(result: CalculationResult): LevelPiece[] {
   const visualCount = Math.max(1, Math.floor(bagsValue))
 
   return [
-    { unit: 'bag', count: bagsValue, text: `${bagsValue.toFixed(2)}袋家用盐`, visualCount },
+    { unit: 'bag', count: bagsValue, text: `${bagsValue.toFixed(2)}袋的盐`, visualCount },
   ]
 }
 
@@ -256,7 +277,7 @@ function buildCookedCard(result: CalculationResult): ResultCardView {
   return {
     label: '到目前为止，我一共吃了',
     summaryText: joinSummary(
-      highToLow[0] ? highToLow[0].text : '0碗饭',
+      highToLow[0] ? highToLow[0].text : '0碗的饭',
       highToLow.slice(1).map((piece) => piece.text),
     ),
     weightText: formatWeightText(result.totalCookedFoodKg, '熟主食'),
@@ -272,7 +293,7 @@ function buildSaltCard(result: CalculationResult): ResultCardView {
   return {
     label: '到目前为止，我一共吃了',
     summaryText: joinSummary(
-      highToLow[0] ? highToLow[0].text : '0袋家用盐',
+      highToLow[0] ? highToLow[0].text : '0袋的盐',
       highToLow.slice(1).map((piece) => piece.text),
     ),
     weightText: formatWeightText(result.totalSaltKg, '盐'),

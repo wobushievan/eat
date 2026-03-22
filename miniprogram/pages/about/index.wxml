@@ -1,18 +1,18 @@
 <view class="page page--about">
   <view class="hero">
     <view class="eyebrow">结果说明</view>
-    <view class="title">这次的数字，是怎么讲出来的</view>
+    <view class="title">这次的数字，是怎么算出来的</view>
     <view class="desc">这里把算法口径讲清楚，方便你把图像、数量和真实含义一起看明白。</view>
   </view>
 
   <view class="card">
     <view class="card-title">这个项目怎么算</view>
-    <view class="card-desc">结果会按 10 个年龄阶段逐段累加。每一段都会结合年龄基准、性别、体型、活动强度、成长与居住省份、主食偏好和盐暴露模式，分别估算熟主食与盐的日均量，再乘以该阶段真实经历天数。</view>
+    <view class="card-desc">结果会按 10 个年龄阶段逐段累加。每一段都会结合年龄基准、性别、体型、活动强度、成长与居住省份、主食偏好和盐暴露模式，分别估算粮食与盐的日均量，再乘以该阶段真实经历天数。</view>
   </view>
 
   <view class="card">
-    <view class="card-title">“熟主食”指什么</view>
-    <view class="card-desc">熟主食指你吃下去的主食熟制后的可食重量，主要包括米饭、面食、杂粮和薯类主食，不包含菜、肉、零食和饮料。</view>
+    <view class="card-title">“粮食”指什么</view>
+    <view class="card-desc">粮食的重量这里泛指主食熟制之后的可食用重量，主要包括米饭、面食、杂粮和薯类主食，不包含菜、肉、零食和饮料。</view>
   </view>
 
   <view class="card">
@@ -27,7 +27,7 @@
 
   <view class="card">
     <view class="card-title">这些单位是怎么换出来的</view>
-    <view class="card-desc">熟主食按 1 碗 = 150g，10 碗 = 1 电饭煲，20 个电饭煲 = 1 饭桶换算。盐按 1 袋家用盐 = 0.5kg，20 袋 = 1 箱盐，1 麻袋盐 = 25kg 换算。</view>
+    <view class="card-desc">粮食按 1 碗 = 150g，10 碗 = 1 电饭煲，20 个电饭煲 = 1 饭桶换算。盐按 1 袋家用盐 = 0.5kg，20 袋 = 1 箱盐，1 麻袋盐 = 25kg 换算。</view>
   </view>
 
   <button class="primary-btn" bindtap="goBack">返回上一页</button>
