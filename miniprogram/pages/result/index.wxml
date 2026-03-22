@@ -10,58 +10,42 @@
 
     <view class="result-card result-card--grain">
       <view class="result-card__label">{{cookedCard.label}}</view>
+      <view class="result-card__summary">{{cookedCard.summaryText}}</view>
 
-      <view class="data-row">
-        <view class="data-row__title">{{cookedCard.primaryRow.title}}</view>
-        <view class="icon-strip">
-          <view wx:for="{{cookedCard.primaryRow.rows}}" wx:key="index" class="icon-row" style="{{item.style}}">
-            <view wx:for="{{item.icons}}" wx:key="index" class="display-icon" style="{{item.style}}">
-              <image class="display-image" src="{{cookedCard.primaryRow.asset}}" mode="aspectFit"></image>
+      <view class="visual-area">
+        <view wx:for="{{cookedCard.visualGroups}}" wx:for-item="group" wx:key="unit" class="visual-group">
+          <view class="visual-group__label">{{group.title}}</view>
+          <view class="icon-strip">
+            <view wx:for="{{group.rows}}" wx:for-item="row" wx:key="index" class="icon-row" style="{{row.style}}">
+              <view wx:for="{{row.icons}}" wx:for-item="icon" wx:key="index" class="display-icon" style="{{icon.style}}">
+                <image class="display-image" src="{{group.asset}}" mode="aspectFit"></image>
+              </view>
             </view>
           </view>
         </view>
       </view>
 
-      <view wx:if="{{cookedCard.secondaryRow}}" class="data-row data-row--secondary">
-        <view class="data-row__title">{{cookedCard.secondaryRow.title}}</view>
-        <view class="icon-strip">
-          <view wx:for="{{cookedCard.secondaryRow.rows}}" wx:key="index" class="icon-row" style="{{item.style}}">
-            <view wx:for="{{item.icons}}" wx:key="index" class="display-icon" style="{{item.style}}">
-              <image class="display-image" src="{{cookedCard.secondaryRow.asset}}" mode="aspectFit"></image>
-            </view>
-          </view>
-        </view>
-      </view>
-
-      <view class="result-total">{{cookedCard.totalText}}</view>
+      <view class="result-total">{{cookedCard.weightText}}</view>
     </view>
 
     <view class="result-card result-card--salt">
       <view class="result-card__label">{{saltCard.label}}</view>
+      <view class="result-card__summary">{{saltCard.summaryText}}</view>
 
-      <view class="data-row">
-        <view class="data-row__title">{{saltCard.primaryRow.title}}</view>
-        <view class="icon-strip">
-          <view wx:for="{{saltCard.primaryRow.rows}}" wx:key="index" class="icon-row" style="{{item.style}}">
-            <view wx:for="{{item.icons}}" wx:key="index" class="display-icon" style="{{item.style}}">
-              <image class="display-image" src="{{saltCard.primaryRow.asset}}" mode="aspectFit"></image>
+      <view class="visual-area">
+        <view wx:for="{{saltCard.visualGroups}}" wx:for-item="group" wx:key="unit" class="visual-group">
+          <view class="visual-group__label">{{group.title}}</view>
+          <view class="icon-strip">
+            <view wx:for="{{group.rows}}" wx:for-item="row" wx:key="index" class="icon-row" style="{{row.style}}">
+              <view wx:for="{{row.icons}}" wx:for-item="icon" wx:key="index" class="display-icon" style="{{icon.style}}">
+                <image class="display-image" src="{{group.asset}}" mode="aspectFit"></image>
+              </view>
             </view>
           </view>
         </view>
       </view>
 
-      <view wx:if="{{saltCard.secondaryRow}}" class="data-row data-row--secondary">
-        <view class="data-row__title">{{saltCard.secondaryRow.title}}</view>
-        <view class="icon-strip">
-          <view wx:for="{{saltCard.secondaryRow.rows}}" wx:key="index" class="icon-row" style="{{item.style}}">
-            <view wx:for="{{item.icons}}" wx:key="index" class="display-icon" style="{{item.style}}">
-              <image class="display-image" src="{{saltCard.secondaryRow.asset}}" mode="aspectFit"></image>
-            </view>
-          </view>
-        </view>
-      </view>
-
-      <view class="result-total">{{saltCard.totalText}}</view>
+      <view class="result-total">{{saltCard.weightText}}</view>
     </view>
 
     <view class="action-row">

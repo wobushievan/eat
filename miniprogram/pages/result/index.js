@@ -1,5 +1,7 @@
 const { getCurrentResultPayload } = require('../../store/session')
 
+const ROW_MAX_WIDTH = 580
+
 const ASSET_MAP = {
   bowl: '../../assets/result-units/bowl.png',
   riceCooker: '../../assets/result-units/rice-cooker.png',
@@ -11,51 +13,42 @@ const ASSET_MAP = {
 
 const LAYOUT_MAP = {
   bowl: {
-    normal: { width: 44, height: 38, overlap: 13, maxPerRow: 12, rowGap: 8 },
-    dense: { width: 38, height: 33, overlap: 11, maxPerRow: 16, rowGap: 6 },
-    compact: { width: 33, height: 28, overlap: 10, maxPerRow: 20, rowGap: 5 },
-    xcompact: { width: 28, height: 24, overlap: 8, maxPerRow: 28, rowGap: 4 },
+    normal: { width: 34, height: 30, overlap: 10, maxPerRow: 14, rowGap: 6 },
+    dense: { width: 30, height: 26, overlap: 9, maxPerRow: 18, rowGap: 5 },
+    compact: { width: 26, height: 23, overlap: 8, maxPerRow: 22, rowGap: 4 },
+    xcompact: { width: 22, height: 19, overlap: 7, maxPerRow: 28, rowGap: 3 },
   },
   riceCooker: {
-    normal: { width: 50, height: 48, overlap: 15, maxPerRow: 12, rowGap: 8 },
-    dense: { width: 43, height: 41, overlap: 13, maxPerRow: 16, rowGap: 6 },
-    compact: { width: 37, height: 35, overlap: 11, maxPerRow: 20, rowGap: 5 },
-    xcompact: { width: 31, height: 29, overlap: 9, maxPerRow: 28, rowGap: 4 },
+    normal: { width: 40, height: 38, overlap: 12, maxPerRow: 12, rowGap: 6 },
+    dense: { width: 35, height: 33, overlap: 10, maxPerRow: 16, rowGap: 5 },
+    compact: { width: 31, height: 29, overlap: 9, maxPerRow: 20, rowGap: 4 },
+    xcompact: { width: 27, height: 25, overlap: 8, maxPerRow: 24, rowGap: 3 },
   },
   bucket: {
-    normal: { width: 56, height: 68, overlap: 17, maxPerRow: 12, rowGap: 9 },
-    dense: { width: 48, height: 58, overlap: 14, maxPerRow: 16, rowGap: 7 },
-    compact: { width: 40, height: 49, overlap: 12, maxPerRow: 20, rowGap: 5 },
-    xcompact: { width: 34, height: 41, overlap: 10, maxPerRow: 28, rowGap: 4 },
+    normal: { width: 44, height: 54, overlap: 13, maxPerRow: 11, rowGap: 6 },
+    dense: { width: 39, height: 48, overlap: 12, maxPerRow: 14, rowGap: 5 },
+    compact: { width: 34, height: 42, overlap: 10, maxPerRow: 18, rowGap: 4 },
+    xcompact: { width: 29, height: 36, overlap: 9, maxPerRow: 22, rowGap: 3 },
   },
   bag: {
-    normal: { width: 42, height: 56, overlap: 13, maxPerRow: 12, rowGap: 8 },
-    dense: { width: 36, height: 49, overlap: 11, maxPerRow: 16, rowGap: 6 },
-    compact: { width: 31, height: 42, overlap: 9, maxPerRow: 20, rowGap: 5 },
-    xcompact: { width: 27, height: 36, overlap: 8, maxPerRow: 28, rowGap: 4 },
+    normal: { width: 30, height: 40, overlap: 9, maxPerRow: 14, rowGap: 6 },
+    dense: { width: 27, height: 36, overlap: 8, maxPerRow: 18, rowGap: 5 },
+    compact: { width: 24, height: 32, overlap: 7, maxPerRow: 22, rowGap: 4 },
+    xcompact: { width: 21, height: 28, overlap: 6, maxPerRow: 26, rowGap: 3 },
   },
   box: {
-    normal: { width: 44, height: 44, overlap: 13, maxPerRow: 12, rowGap: 8 },
-    dense: { width: 38, height: 38, overlap: 11, maxPerRow: 16, rowGap: 6 },
-    compact: { width: 33, height: 33, overlap: 10, maxPerRow: 20, rowGap: 5 },
-    xcompact: { width: 28, height: 28, overlap: 8, maxPerRow: 28, rowGap: 4 },
+    normal: { width: 34, height: 34, overlap: 10, maxPerRow: 13, rowGap: 6 },
+    dense: { width: 30, height: 30, overlap: 9, maxPerRow: 17, rowGap: 5 },
+    compact: { width: 26, height: 26, overlap: 8, maxPerRow: 21, rowGap: 4 },
+    xcompact: { width: 22, height: 22, overlap: 7, maxPerRow: 26, rowGap: 3 },
   },
   sack: {
-    normal: { width: 48, height: 60, overlap: 14, maxPerRow: 12, rowGap: 8 },
-    dense: { width: 42, height: 52, overlap: 12, maxPerRow: 16, rowGap: 6 },
-    compact: { width: 36, height: 45, overlap: 10, maxPerRow: 20, rowGap: 5 },
-    xcompact: { width: 31, height: 38, overlap: 8, maxPerRow: 28, rowGap: 4 },
+    normal: { width: 38, height: 48, overlap: 11, maxPerRow: 12, rowGap: 6 },
+    dense: { width: 33, height: 42, overlap: 10, maxPerRow: 16, rowGap: 5 },
+    compact: { width: 29, height: 36, overlap: 8, maxPerRow: 20, rowGap: 4 },
+    xcompact: { width: 25, height: 31, overlap: 7, maxPerRow: 24, rowGap: 3 },
   },
 }
-
-const FRACTION_RULES = {
-  riceCooker: { unit: 'bowl', multiplier: 10 },
-  bucket: { unit: 'riceCooker', multiplier: 20 },
-  box: { unit: 'bag', multiplier: 20 },
-  sack: { unit: 'box', multiplier: 2.5 },
-}
-
-const ROW_MAX_WIDTH = 620
 
 function getNowDateString() {
   const now = new Date()
@@ -65,14 +58,18 @@ function getNowDateString() {
   return `${year}-${month}-${day}`
 }
 
+function roundToTwo(value) {
+  return Math.round((value + Number.EPSILON) * 100) / 100
+}
+
 function resolveDensity(count) {
-  if (count > 48) {
+  if (count > 80) {
     return 'xcompact'
   }
-  if (count > 24) {
+  if (count > 40) {
     return 'compact'
   }
-  if (count > 12) {
+  if (count > 18) {
     return 'dense'
   }
   return 'normal'
@@ -106,119 +103,138 @@ function buildRows(unit, count) {
   return rows
 }
 
-function buildRow(unit, title, count) {
-  return {
-    title,
-    asset: ASSET_MAP[unit],
-    rows: buildRows(unit, count),
-  }
+function buildVisualGroups(pieces) {
+  return pieces
+    .filter((piece) => piece.visualCount > 0)
+    .map((piece) => ({
+      unit: piece.unit,
+      title: piece.text,
+      asset: ASSET_MAP[piece.unit],
+      rows: buildRows(piece.unit, piece.visualCount),
+    }))
 }
 
 function formatWeightText(totalKg, label) {
   if (totalKg >= 1000) {
-    return `一共是${(totalKg / 1000).toFixed(1)}吨${label}`
+    return `共计 ${(totalKg / 1000).toFixed(1)} 吨${label}`
   }
   if (totalKg >= 1) {
-    return `一共是${totalKg.toFixed(1)}kg${label}`
+    return `共计 ${totalKg.toFixed(1)} kg ${label}`
   }
-  return `一共是${Math.round(totalKg * 1000)}g${label}`
+  return `共计 ${Math.round(totalKg * 1000)} g ${label}`
 }
 
-function getCookedUnitTitle(unit, value) {
-  if (unit === 'bucket') {
-    return `${value}桶饭`
+function joinSummary(primaryText, extraTexts) {
+  if (extraTexts.length === 0) {
+    return primaryText
   }
-  if (unit === 'riceCooker') {
-    return `${value}个电饭煲`
+  if (extraTexts.length === 1) {
+    return `${primaryText}，外加${extraTexts[0]}`
   }
-  return `${value}碗饭`
+  return `${primaryText}，外加${extraTexts[0]}和${extraTexts[1]}`
 }
 
-function getSaltUnitTitle(unit, value) {
-  if (unit === 'sack') {
-    return `${value}麻袋盐`
+function buildCookedPieces(result) {
+  const roundedPrimary = roundToTwo(result.cookedDisplay.primaryValue)
+
+  if (result.cookedDisplay.primaryUnit === 'bucket') {
+    const totalBowls = Math.floor(roundedPrimary * 200 + 1e-6)
+    const buckets = Math.floor(totalBowls / 200)
+    const remainBowls = totalBowls - buckets * 200
+    const riceCookers = Math.floor(remainBowls / 10)
+    const bowls = remainBowls - riceCookers * 10
+
+    return [
+      { unit: 'bucket', count: buckets, text: `${buckets}桶饭`, visualCount: buckets },
+      { unit: 'riceCooker', count: riceCookers, text: `${riceCookers}个电饭煲`, visualCount: riceCookers },
+      { unit: 'bowl', count: bowls, text: `${bowls}碗饭`, visualCount: bowls },
+    ]
   }
-  if (unit === 'box') {
-    return `${value}箱盐`
+
+  if (result.cookedDisplay.primaryUnit === 'riceCooker') {
+    const totalBowls = Math.floor(roundedPrimary * 10 + 1e-6)
+    const riceCookers = Math.floor(totalBowls / 10)
+    const bowls = totalBowls - riceCookers * 10
+
+    return [
+      { unit: 'riceCooker', count: riceCookers, text: `${riceCookers}个电饭煲`, visualCount: riceCookers },
+      { unit: 'bowl', count: bowls, text: `${bowls}碗饭`, visualCount: bowls },
+    ]
   }
-  return `${value}袋家用盐`
+
+  const bowlsValue = roundedPrimary
+  const visualCount = Math.max(1, Math.floor(bowlsValue))
+
+  return [
+    { unit: 'bowl', count: bowlsValue, text: `${bowlsValue.toFixed(2)}碗饭`, visualCount },
+  ]
 }
 
-function resolveCookedUnit(primaryUnit) {
-  if (primaryUnit === 'bowl') {
-    return 'bowl'
-  }
-  if (primaryUnit === 'riceCooker') {
-    return 'riceCooker'
-  }
-  return 'bucket'
-}
+function buildSaltPieces(result) {
+  const roundedPrimary = roundToTwo(result.saltDisplay.primaryValue)
 
-function resolveSaltUnit(primaryUnit) {
-  if (primaryUnit === 'bag') {
-    return 'bag'
+  if (result.saltDisplay.primaryUnit === 'sack') {
+    const totalBags = Math.floor(roundedPrimary * 50 + 1e-6)
+    const sacks = Math.floor(totalBags / 50)
+    const remainBags = totalBags - sacks * 50
+    const boxes = Math.floor(remainBags / 20)
+    const bags = remainBags - boxes * 20
+
+    return [
+      { unit: 'sack', count: sacks, text: `${sacks}麻袋盐`, visualCount: sacks },
+      { unit: 'box', count: boxes, text: `${boxes}箱盐`, visualCount: boxes },
+      { unit: 'bag', count: bags, text: `${bags}袋家用盐`, visualCount: bags },
+    ]
   }
-  if (primaryUnit === 'box') {
-    return 'box'
+
+  if (result.saltDisplay.primaryUnit === 'box') {
+    const totalBags = Math.floor(roundedPrimary * 20 + 1e-6)
+    const boxes = Math.floor(totalBags / 20)
+    const bags = totalBags - boxes * 20
+
+    return [
+      { unit: 'box', count: boxes, text: `${boxes}箱盐`, visualCount: boxes },
+      { unit: 'bag', count: bags, text: `${bags}袋家用盐`, visualCount: bags },
+    ]
   }
-  return 'sack'
+
+  const bagsValue = roundedPrimary
+  const visualCount = Math.max(1, Math.floor(bagsValue))
+
+  return [
+    { unit: 'bag', count: bagsValue, text: `${bagsValue.toFixed(2)}袋家用盐`, visualCount },
+  ]
 }
 
 function buildCookedCard(result) {
-  const unit = resolveCookedUnit(result.cookedDisplay.primaryUnit)
-  const rawValue = result.cookedDisplay.primaryValue
-  const integerPart = Math.floor(rawValue)
-  const primaryCount = integerPart >= 1 ? integerPart : Math.max(1, Math.round(rawValue))
-  const primaryRow = buildRow(unit, getCookedUnitTitle(unit, primaryCount), primaryCount)
-
-  let secondaryRow = null
-  const fractionRule = FRACTION_RULES[unit]
-
-  if (fractionRule && integerPart >= 1) {
-    const fractionCount = Math.floor((rawValue - integerPart) * fractionRule.multiplier)
-    if (fractionCount >= 1) {
-      secondaryRow = buildRow(
-        fractionRule.unit,
-        getCookedUnitTitle(fractionRule.unit, fractionCount),
-        fractionCount,
-      )
-    }
-  }
+  const pieces = buildCookedPieces(result)
+  const highToLow = pieces.filter((piece) => piece.count > 0)
+  const lowToHigh = [...highToLow].reverse()
 
   return {
     label: '到目前为止，我一共吃了',
-    primaryRow,
-    secondaryRow,
-    totalText: formatWeightText(result.totalCookedFoodKg, '熟主食'),
+    summaryText: joinSummary(
+      highToLow[0] ? highToLow[0].text : '0碗饭',
+      highToLow.slice(1).map((piece) => piece.text),
+    ),
+    weightText: formatWeightText(result.totalCookedFoodKg, '熟主食'),
+    visualGroups: buildVisualGroups(lowToHigh),
   }
 }
 
 function buildSaltCard(result) {
-  const unit = resolveSaltUnit(result.saltDisplay.primaryUnit)
-  const rawValue = result.saltDisplay.primaryValue
-  const integerPart = Math.floor(rawValue)
-  const primaryCount = integerPart >= 1 ? integerPart : Math.max(1, Math.round(rawValue))
-  const primaryRow = buildRow(unit, getSaltUnitTitle(unit, primaryCount), primaryCount)
-
-  let secondaryRow = null
-  const fractionRule = FRACTION_RULES[unit]
-
-  if (fractionRule && integerPart >= 1) {
-    const fractionCount = Math.floor((rawValue - integerPart) * fractionRule.multiplier)
-    if (fractionCount >= 1) {
-      secondaryRow = buildRow(
-        fractionRule.unit,
-        getSaltUnitTitle(fractionRule.unit, fractionCount),
-        fractionCount,
-      )
-    }
-  }
+  const pieces = buildSaltPieces(result)
+  const highToLow = pieces.filter((piece) => piece.count > 0)
+  const lowToHigh = [...highToLow].reverse()
 
   return {
     label: '到目前为止，我一共吃了',
-    primaryRow,
-    secondaryRow,
-    totalText: formatWeightText(result.totalSaltKg, '盐'),
+    summaryText: joinSummary(
+      highToLow[0] ? highToLow[0].text : '0袋家用盐',
+      highToLow.slice(1).map((piece) => piece.text),
+    ),
+    weightText: formatWeightText(result.totalSaltKg, '盐'),
+    visualGroups: buildVisualGroups(lowToHigh),
   }
 }
 
