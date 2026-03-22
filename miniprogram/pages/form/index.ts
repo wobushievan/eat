@@ -13,6 +13,11 @@ import type {
 } from '../../types/form'
 import type { ProvinceCode } from '../../types/province'
 
+interface RatioBoundaries {
+  first: number
+  second: number
+}
+
 const TODAY_MIN = '1900-01-01'
 
 const PROVINCE_OPTIONS: Array<{ label: string; value: ProvinceCode }> = [
@@ -83,6 +88,43 @@ function buildFormData(base: UserFormData): UserFormData {
     wheatRatio: Math.max(0, Math.min(100, Math.round(base.wheatRatio))),
     tuberRatio: Math.max(0, Math.min(100, Math.round(base.tuberRatio))),
   }
+}
+
+function buildRatioFromBoundaries(first: number, second: number): RatioValue {
+  const safeFirst = Math.max(0, Math.min(100, Math.round(first)))
+  const safeSecond = Math.max(safeFirst, Math.min(100, Math.round(second)))
+
+  return {
+    riceRatio: safeFirst,
+    wheatRatio: safeSecond - safeFirst,
+    tuberRatio: 100 - safeSecond,
+  }
+}
+
+function buildBoundariesFromRatio(ratio: RatioValue): RatioBoundaries {
+  return {
+    first: ratio.riceRatio,
+    second: ratio.riceRatio + ratio.wheatRatio,
+  }
+}
+
+function normalizeRatioValue(ratio: RatioValue): RatioValue {
+  const rice = Math.max(0, ratio.riceRatio)
+  const wheat = Math.max(0, ratio.wheatRatio)
+  const tuber = Math.max(0, ratio.tuberRatio)
+  const total = rice + wheat + tuber
+
+  if (total <= 0) {
+    return {
+      riceRatio: DEFAULT_FORM_DATA.riceRatio,
+      wheatRatio: DEFAULT_FORM_DATA.wheatRatio,
+      tuberRatio: DEFAULT_FORM_DATA.tuberRatio,
+    }
+  }
+
+  const first = Math.round((rice / total) * 100)
+  const second = Math.round(((rice + wheat) / total) * 100)
+  return buildRatioFromBoundaries(first, second)
 }
 
 function validateAll(formData: UserFormData, today: string): string {
@@ -168,6 +210,14 @@ Page({
       wheatRatio: DEFAULT_FORM_DATA.wheatRatio,
       tuberRatio: DEFAULT_FORM_DATA.tuberRatio,
     },
+    ratioBoundaries: buildBoundariesFromRatio({
+      riceRatio: DEFAULT_FORM_DATA.riceRatio,
+      wheatRatio: DEFAULT_FORM_DATA.wheatRatio,
+      tuberRatio: DEFAULT_FORM_DATA.tuberRatio,
+    }),
+    ratioTrackLeft: 0,
+    ratioTrackWidth: 0,
+    activeRatioHandle: '',
     errorText: '',
     formData: DEFAULT_FORM_DATA,
   },
@@ -178,17 +228,46 @@ Page({
       ...DEFAULT_FORM_DATA,
       ...(cached || {}),
     })
+    const normalizedRatio = normalizeRatioValue({
+      riceRatio: nextFormData.riceRatio,
+      wheatRatio: nextFormData.wheatRatio,
+      tuberRatio: nextFormData.tuberRatio,
+    })
+    const nextWithRatio = {
+      ...nextFormData,
+      ...normalizedRatio,
+    }
 
     this.setData({
-      formData: nextFormData,
-      childhoodProvinceIndex: findProvinceIndex(nextFormData.childhoodProvince),
-      adultProvinceIndex: findProvinceIndex(nextFormData.adultProvince),
-      ratioValue: {
-        riceRatio: nextFormData.riceRatio,
-        wheatRatio: nextFormData.wheatRatio,
-        tuberRatio: nextFormData.tuberRatio,
-      },
+      formData: nextWithRatio,
+      childhoodProvinceIndex: findProvinceIndex(nextWithRatio.childhoodProvince),
+      adultProvinceIndex: findProvinceIndex(nextWithRatio.adultProvince),
+      ratioValue: normalizedRatio,
+      ratioBoundaries: buildBoundariesFromRatio(normalizedRatio),
     })
+  },
+
+  onReady() {
+    this.measureRatioTrack()
+  },
+
+  onShow() {
+    this.measureRatioTrack()
+  },
+
+  measureRatioTrack() {
+    const query = this.createSelectorQuery()
+    query.select('#ratioTrack').boundingClientRect((rect) => {
+      if (!rect) {
+        return
+      }
+
+      this.setData({
+        ratioTrackLeft: rect.left,
+        ratioTrackWidth: rect.width,
+      })
+    })
+    query.exec()
   },
 
   onBirthDateChange(event: WechatMiniprogram.PickerChange) {
@@ -272,22 +351,77 @@ Page({
     })
   },
 
-  onRatioChange(event: WechatMiniprogram.CustomEvent<{ value: number }>) {
-    const key = event.currentTarget.dataset.key as keyof RatioValue
-    const nextValue = Number(event.detail.value)
-    const safeValue = Math.max(0, Math.min(100, Math.round(nextValue)))
-    const nextRatio = {
-      ...this.data.ratioValue,
-      [key]: safeValue,
-    }
+  applyRatioBoundaries(first: number, second: number) {
+    const nextRatio = buildRatioFromBoundaries(first, second)
 
     this.setData({
       ratioValue: nextRatio,
+      ratioBoundaries: buildBoundariesFromRatio(nextRatio),
       'formData.riceRatio': nextRatio.riceRatio,
       'formData.wheatRatio': nextRatio.wheatRatio,
       'formData.tuberRatio': nextRatio.tuberRatio,
       errorText: '',
     })
+  },
+
+  updateRatioByPageX(pageX: number, handle: 'first' | 'second') {
+    if (!this.data.ratioTrackWidth) {
+      this.measureRatioTrack()
+      return
+    }
+
+    const percent = ((pageX - this.data.ratioTrackLeft) / this.data.ratioTrackWidth) * 100
+
+    if (handle === 'first') {
+      this.applyRatioBoundaries(percent, this.data.ratioBoundaries.second)
+      return
+    }
+
+    this.applyRatioBoundaries(this.data.ratioBoundaries.first, percent)
+  },
+
+  onRatioHandleStart(event: WechatMiniprogram.TouchEvent) {
+    const handle = event.currentTarget.dataset.handle as 'first' | 'second'
+    const touch = event.touches[0]
+
+    this.setData({
+      activeRatioHandle: handle,
+      errorText: '',
+    })
+
+    if (touch) {
+      this.updateRatioByPageX(touch.pageX, handle)
+    }
+  },
+
+  onRatioHandleMove(event: WechatMiniprogram.TouchEvent) {
+    const handle = (this.data.activeRatioHandle || event.currentTarget.dataset.handle) as 'first' | 'second'
+    const touch = event.touches[0]
+
+    if (touch) {
+      this.updateRatioByPageX(touch.pageX, handle)
+    }
+  },
+
+  onRatioHandleEnd() {
+    this.setData({
+      activeRatioHandle: '',
+    })
+  },
+
+  onRatioTrackTap(event: WechatMiniprogram.TouchEvent) {
+    const touch = event.changedTouches[0]
+
+    if (!touch || !this.data.ratioTrackWidth) {
+      return
+    }
+
+    const percent = ((touch.pageX - this.data.ratioTrackLeft) / this.data.ratioTrackWidth) * 100
+    const distanceToFirst = Math.abs(percent - this.data.ratioBoundaries.first)
+    const distanceToSecond = Math.abs(percent - this.data.ratioBoundaries.second)
+    const handle = distanceToFirst <= distanceToSecond ? 'first' : 'second'
+
+    this.updateRatioByPageX(touch.pageX, handle)
   },
 
   onTasteChange(event: WechatMiniprogram.CustomEvent<{ value: TasteLevel }>) {

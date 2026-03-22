@@ -169,51 +169,103 @@
   margin-bottom: 10rpx;
 }
 
-.ratio-block {
-  padding: 18rpx 18rpx 14rpx;
-  border-radius: 24rpx;
-  border: 2rpx solid rgba(235, 220, 198, 0.72);
-  background: rgba(255, 250, 243, 0.82);
-}
-
-.ratio-block + .ratio-block {
-  margin-top: 14rpx;
-}
-
-.ratio-block--rice {
-  background: linear-gradient(180deg, rgba(255, 246, 231, 0.96) 0%, rgba(250, 234, 205, 0.92) 100%);
-}
-
-.ratio-block--wheat {
-  background: linear-gradient(180deg, rgba(252, 246, 235, 0.96) 0%, rgba(244, 230, 205, 0.92) 100%);
-}
-
-.ratio-block--tuber {
-  background: linear-gradient(180deg, rgba(245, 250, 247, 0.96) 0%, rgba(229, 240, 233, 0.92) 100%);
-}
-
-.ratio-head {
+.ratio-summary {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6rpx;
+  gap: 10rpx;
+  flex-wrap: wrap;
+  margin-bottom: 16rpx;
 }
 
-.ratio-name {
-  font-size: 28rpx;
+.ratio-chip {
+  min-width: 180rpx;
+  padding: 14rpx 18rpx;
+  border-radius: 22rpx;
+  border: 2rpx solid rgba(235, 220, 198, 0.72);
+  box-sizing: border-box;
+  box-shadow: 0 8rpx 18rpx rgba(184, 156, 123, 0.08);
+}
+
+.ratio-chip--rice {
+  background: linear-gradient(180deg, rgba(240, 178, 104, 0.22) 0%, rgba(235, 161, 95, 0.16) 100%);
+  border-color: rgba(236, 177, 109, 0.34);
+}
+
+.ratio-chip--wheat {
+  background: linear-gradient(180deg, rgba(221, 180, 111, 0.22) 0%, rgba(206, 161, 90, 0.16) 100%);
+  border-color: rgba(210, 169, 101, 0.32);
+}
+
+.ratio-chip--tuber {
+  background: linear-gradient(180deg, rgba(157, 196, 175, 0.24) 0%, rgba(135, 177, 157, 0.16) 100%);
+  border-color: rgba(138, 178, 158, 0.32);
+}
+
+.ratio-chip__name {
+  display: block;
+  font-size: 24rpx;
+  color: #6f5b4d;
+}
+
+.ratio-chip__value {
+  display: block;
+  margin-top: 6rpx;
+  font-size: 30rpx;
+  font-weight: 700;
   color: #2f241d;
 }
 
-.ratio-value {
-  font-size: 26rpx;
-  font-weight: 700;
-  color: #af7740;
+.ratio-segmented {
+  position: relative;
+  height: 56rpx;
+  padding: 8rpx 0;
 }
 
-.ratio-total {
-  margin-top: 14rpx;
+.ratio-segmented__bar {
+  position: relative;
+  height: 100%;
+  border-radius: 999rpx;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(250, 242, 228, 0.95) 0%, rgba(241, 231, 214, 0.92) 100%);
+  border: 2rpx solid rgba(235, 220, 198, 0.76);
+  box-shadow: inset 0 6rpx 12rpx rgba(255, 255, 255, 0.35);
+}
+
+.ratio-segment {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.ratio-segment--rice {
+  background: linear-gradient(180deg, #f0b268 0%, #eba15f 100%);
+}
+
+.ratio-segment--wheat {
+  background: linear-gradient(180deg, #ddb46f 0%, #cea15a 100%);
+}
+
+.ratio-segment--tuber {
+  background: linear-gradient(180deg, #9dc4af 0%, #87b19d 100%);
+}
+
+.ratio-handle {
+  position: absolute;
+  top: 50%;
+  width: 24rpx;
+  height: 40rpx;
+  transform: translate(-50%, -50%);
+  border-radius: 999rpx;
+  background: linear-gradient(180deg, #fffdf8 0%, #f4ead7 100%);
+  border: 2rpx solid rgba(221, 201, 172, 0.92);
+  box-shadow: 0 8rpx 14rpx rgba(162, 127, 93, 0.14);
+  z-index: 2;
+}
+
+.ratio-hint {
+  margin-top: 12rpx;
   font-size: 24rpx;
-  color: #7a695d;
+  line-height: 1.6;
+  color: #7b695d;
 }
 
 .error-box {

@@ -88,31 +88,49 @@
     <view class="field">
       <view class="field-label">8A. 主食偏好</view>
 
-      <view class="ratio-block ratio-block--rice">
-        <view class="ratio-head">
-          <text class="ratio-name">米饭</text>
-          <text class="ratio-value">{{ratioValue.riceRatio}}%</text>
+      <view class="ratio-summary">
+        <view class="ratio-chip ratio-chip--rice">
+          <text class="ratio-chip__name">米饭</text>
+          <text class="ratio-chip__value">{{ratioValue.riceRatio}}%</text>
         </view>
-        <slider min="0" max="100" step="1" value="{{ratioValue.riceRatio}}" activeColor="#eea458" backgroundColor="#f4dfbe" data-key="riceRatio" bindchange="onRatioChange" />
+        <view class="ratio-chip ratio-chip--wheat">
+          <text class="ratio-chip__name">面食</text>
+          <text class="ratio-chip__value">{{ratioValue.wheatRatio}}%</text>
+        </view>
+        <view class="ratio-chip ratio-chip--tuber">
+          <text class="ratio-chip__name">粗粮杂粮</text>
+          <text class="ratio-chip__value">{{ratioValue.tuberRatio}}%</text>
+        </view>
       </view>
 
-      <view class="ratio-block ratio-block--wheat">
-        <view class="ratio-head">
-          <text class="ratio-name">面食</text>
-          <text class="ratio-value">{{ratioValue.wheatRatio}}%</text>
+      <view class="ratio-segmented" id="ratioTrack" bindtap="onRatioTrackTap">
+        <view class="ratio-segmented__bar">
+          <view class="ratio-segment ratio-segment--rice" style="width: {{ratioValue.riceRatio}}%;"></view>
+          <view class="ratio-segment ratio-segment--wheat" style="left: {{ratioValue.riceRatio}}%; width: {{ratioValue.wheatRatio}}%;"></view>
+          <view class="ratio-segment ratio-segment--tuber" style="left: {{ratioValue.riceRatio + ratioValue.wheatRatio}}%; width: {{ratioValue.tuberRatio}}%;"></view>
         </view>
-        <slider min="0" max="100" step="1" value="{{ratioValue.wheatRatio}}" activeColor="#d6a862" backgroundColor="#efdec4" data-key="wheatRatio" bindchange="onRatioChange" />
+
+        <view
+          class="ratio-handle"
+          style="left: {{ratioBoundaries.first}}%;"
+          data-handle="first"
+          catchtouchstart="onRatioHandleStart"
+          catchtouchmove="onRatioHandleMove"
+          catchtouchend="onRatioHandleEnd"
+          catchtouchcancel="onRatioHandleEnd"
+        ></view>
+        <view
+          class="ratio-handle"
+          style="left: {{ratioBoundaries.second}}%;"
+          data-handle="second"
+          catchtouchstart="onRatioHandleStart"
+          catchtouchmove="onRatioHandleMove"
+          catchtouchend="onRatioHandleEnd"
+          catchtouchcancel="onRatioHandleEnd"
+        ></view>
       </view>
 
-      <view class="ratio-block ratio-block--tuber">
-        <view class="ratio-head">
-          <text class="ratio-name">粗粮杂粮</text>
-          <text class="ratio-value">{{ratioValue.tuberRatio}}%</text>
-        </view>
-        <slider min="0" max="100" step="1" value="{{ratioValue.tuberRatio}}" activeColor="#91b9a5" backgroundColor="#dbe9e0" data-key="tuberRatio" bindchange="onRatioChange" />
-      </view>
-
-      <view class="ratio-total">当前总和：{{ratioValue.riceRatio + ratioValue.wheatRatio + ratioValue.tuberRatio}}%</view>
+      <view class="ratio-hint">拖动两个分界点，调整米饭、面食和粗粮杂粮的占比。</view>
     </view>
 
     <view class="field">
